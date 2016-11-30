@@ -46,15 +46,7 @@ module Kefir
       if paths.first.is_a?(Hash)
         config.merge!(paths.first)
       elsif paths.size >= 2
-        value = paths.pop
-        *keys, last_key = paths
-
-        nested = keys.inject(config) do |config, key|
-          config[key] = {} unless config[key]
-          config[key]
-        end
-
-        nested[last_key] = value unless nested.nil?
+        deep_set(config, paths)
       else
         raise ArgumentError.new, 'Kefir::Config.set accepts a hash or key(s) and value'
       end
@@ -72,6 +64,20 @@ module Kefir
 
     def to_h
       config.dup
+    end
+
+    private
+
+    def deep_set(hash, paths)
+      value = paths.pop
+      *keys, last_key = paths
+
+      nested = keys.inject(hash) do |h, key|
+        h[key] = {} unless h[key]
+        h[key]
+      end
+
+      nested[last_key] = value unless nested.nil?
     end
   end
 
