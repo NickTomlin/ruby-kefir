@@ -1,4 +1,4 @@
-kefir kefir [![Build Status](https://travis-ci.org/NickTomlin/kefir.png?branch=master)](https://travis-ci.org/NickTomlin/kefir.fury.io/rb/kefir.svg)](https://badge.fury.io/rb/kefir)
+kefir [![Build Status](https://travis-ci.org/NickTomlin/kefir.png?branch=master)](https://travis-ci.org/NickTomlin/kefir) [![Gem Version](https://badge.fury.io/rb/kefir.svg)](https://badge.fury.io/rb/kefir)
 ===
 
 Simple configuration for your Gem or application. A ruby port of [conf](https://www.npmjs.com/package/conf).
