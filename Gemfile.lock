@@ -16,6 +16,7 @@ GEM
       ast (~> 2.2)
     powerpack (0.1.1)
     rainbow (2.1.0)
+    rake (10.5.0)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -42,6 +43,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 1.7)
   kefir!
+  rake (~> 10.0)
   rspec (~> 3)
   rubocop (~> 0.45)
+
+BUNDLED WITH
+   1.12.5

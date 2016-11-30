@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'env_paths', '~> 0.0.2'
   s.add_dependency 'dig_rb', '~> 1.0', '>= 1.0.1'
+  s.add_development_dependency 'bundler', '~> 1.7'
+  s.add_development_dependency 'rake', '~> 10.0'
   s.add_development_dependency 'rspec', '~> 3'
   s.add_development_dependency 'rubocop', '~> 0.45'
 end
