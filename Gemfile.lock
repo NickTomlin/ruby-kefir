@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kefir (0.1.0)
+    kefir (1.0.0)
       dig_rb (~> 1.0, >= 1.0.1)
       env_paths (~> 0.0.2)
 
