@@ -1,6 +1,6 @@
 require 'dig_rb'
 require 'env_paths'
-require 'YAML'
+require 'yaml'
 require 'kefir/version'
 require 'kefir/config'
 require 'kefir/file_store'

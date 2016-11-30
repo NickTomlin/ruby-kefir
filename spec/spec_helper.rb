@@ -1,5 +1,5 @@
 require 'rspec'
-require 'YAML'
+require 'yaml'
 require 'tmpdir'
 require 'fileutils'
 require 'kefir'
