@@ -22,6 +22,14 @@ RSpec.describe Kefir do
       end
     end
 
+    it 'includes enumerable methods' do
+      config.set(:foo, 'hay')
+      config.set(:biz, 'needle')
+
+      expect(config.any? { |_, v| v == 'needle' }).to eq(true)
+      expect(config.count).to eq(2)
+    end
+
     describe 'set' do
       it 'sets config' do
         config.set(:foo, 'bar')

@@ -23,6 +23,12 @@ module Kefir
   end
 
   class Config
+    include Enumerable
+
+    def each(&block)
+      @config.each(&block)
+    end
+
     def initialize(store, options)
       @store = store
       @options = options
