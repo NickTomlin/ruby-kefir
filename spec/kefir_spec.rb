@@ -56,12 +56,12 @@ RSpec.describe Kefir do
       end
     end
 
-    describe 'store' do
+    describe 'persist' do
       it 'persists data to a store' do
         expect(store_double).to receive(:write).with(one: { two: 'bar' })
 
         config.set(:one, :two, 'bar')
-        config.store
+        config.persist
       end
     end
   end
@@ -136,7 +136,7 @@ RSpec.describe Kefir do
       expect(File).to receive(:write)
 
       config = Kefir.config('test')
-      config.store
+      config.persist
     end
   end
 end

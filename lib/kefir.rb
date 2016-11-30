@@ -31,7 +31,7 @@ module Kefir
       @config ||= @store.read
     end
 
-    def store
+    def persist
       @store.write(config)
     end
 

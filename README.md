@@ -31,7 +31,7 @@ api_key = config.get(:api_key)
 config.set(:api_key, api_key + '!')
 
 # write your changes
-config.store
+config.persist
 ```
 
 `get` and `set` can accept multiple keys for nested paths:
