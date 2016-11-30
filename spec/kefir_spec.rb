@@ -7,54 +7,62 @@ RSpec.describe Kefir do
     let(:store_double) { double(Kefir::FileStore, read: {}, write: nil) }
     let(:config) { Kefir::Config.new(store_double) }
 
-    it 'sets config' do
-      config.set(:foo, 'bar')
+    describe 'set' do
+      it 'sets config' do
+        config.set(:foo, 'bar')
 
-      expect(config.get(:foo)).to eq('bar')
+        expect(config.get(:foo)).to eq('bar')
+      end
+
+      it 'raises an error if less than two arguments are supplied' do
+        expect do
+          config.set(:foo)
+        end.to raise_exception(ArgumentError, 'Kefir::Config.set requires at least one path and value')
+      end
+
+      it 'handles nested config values' do
+        config.set(:my, :nested, :value, 'hello')
+
+        expect(config.get(:my, :nested, :value)).to eq('hello')
+      end
+
+      it 'handles array indexes' do
+        config.set(:nested, :array, [])
+        config.set(:nested, :array, 0, 'hello')
+
+        expect(config.get(:nested, :array, 0)).to eq('hello')
+      end
+
+      it 'handles a mixture of symbols and strings' do
+        config.set(:one, 'two', 'boo')
+
+        expect(config.get(:one, 'two')).to eq('boo')
+      end
     end
 
-    it 'raises an error if less than two arguments are supplied' do
-      expect do
-        config.set(:foo)
-      end.to raise_exception(ArgumentError, 'Kefir::Config.set requires at least one path and value')
+    describe 'to_s' do
+      it 'stringifies as the value of it\'s config hash' do
+        config.set(:one, :two, 'bar')
+
+        expect(config.to_s).to eq('{:one=>{:two=>"bar"}}')
+      end
     end
 
-    it 'handles nested config values' do
-      config.set(:my, :nested, :value, 'hello')
+    describe 'to_h' do
+      it 'provides access to the underlying hash' do
+        config.set(:one, 'bar')
 
-      expect(config.get(:my, :nested, :value)).to eq('hello')
+        expect(config.to_h).to eq(one: 'bar')
+      end
     end
 
-    it 'handles array indexes' do
-      config.set(:nested, :array, [])
-      config.set(:nested, :array, 0, 'hello')
+    describe 'store' do
+      it 'persists data to a store' do
+        expect(store_double).to receive(:write).with(one: { two: 'bar' })
 
-      expect(config.get(:nested, :array, 0)).to eq('hello')
-    end
-
-    it 'stringifies as the value of it\'s config hash' do
-      config.set(:one, :two, 'bar')
-
-      expect(config.to_s).to eq('{:one=>{:two=>"bar"}}')
-    end
-
-    it 'handles a mixture of symbols and strings' do
-      config.set(:one, 'two', 'boo')
-
-      expect(config.get(:one, 'two')).to eq('boo')
-    end
-
-    it 'persists data to a store' do
-      expect(store_double).to receive(:write).with(one: { two: 'bar' })
-
-      config.set(:one, :two, 'bar')
-      config.store
-    end
-
-    it 'provides acces to the underlying hash' do
-      config.set(:one, 'bar')
-
-      expect(config.to_h).to eq(one: 'bar')
+        config.set(:one, :two, 'bar')
+        config.store
+      end
     end
   end
 
