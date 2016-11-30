@@ -4,7 +4,7 @@ require 'fileutils'
 
 RSpec.describe Kefir do
   describe Kefir::Config do
-    let(:store_double) { double(Kefir::FileStore, :read => {}, :write => nil) }
+    let(:store_double) { double(Kefir::FileStore, read: {}, write: nil) }
     let(:config) { Kefir::Config.new(store_double) }
 
     it 'sets config' do
@@ -20,9 +20,9 @@ RSpec.describe Kefir do
     end
 
     it 'handles nested config values' do
-      config.set(:one, :two, 'bar')
+      config.set(:my, :nested, :value, 'hello')
 
-      expect(config.get(:one, :two)).to eq('bar')
+      expect(config.get(:my, :nested, :value)).to eq('hello')
     end
 
     it 'handles array indexes' do

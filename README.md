@@ -22,7 +22,25 @@ Or install it yourself as:
 ## Usage
 
 ```
+require 'kefir'
 
+config = Kefier.config('my_gem')
+
+api_key = config.get(:api_key)
+
+config.set(:api_key, api_key + '!')
+
+# write your changes
+config.store
+```
+
+`get` and `set` can accept multiple keys for nested paths:
+
+```
+config.set(:my, :nested, :value, 'hello!')
+value = config.get(:my, :nested, :value)
+
+expect(value).to eq('hello!')
 ```
 
 ## Contributing
