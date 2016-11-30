@@ -23,8 +23,7 @@ RSpec.describe Kefir do
     end
 
     it 'includes enumerable methods' do
-      config.set(:foo, 'hay')
-      config.set(:biz, 'needle')
+      config.set(foo: 'hay', biz: 'needle')
 
       expect(config.any? { |_, v| v == 'needle' }).to eq(true)
       expect(config.count).to eq(2)
@@ -37,10 +36,16 @@ RSpec.describe Kefir do
         expect(config.get(:foo)).to eq('bar')
       end
 
+      it 'accepts a hash' do
+        config.set(foo: 'bar', biz: 'baz', hsh: { nested: 'value' })
+
+        expect(config.get(:hsh)).to eq(nested: 'value')
+      end
+
       it 'raises an error if less than two arguments are supplied' do
         expect do
           config.set(:foo)
-        end.to raise_exception(ArgumentError, 'Kefir::Config.set requires at least one path and value')
+        end.to raise_exception(ArgumentError, 'Kefir::Config.set accepts a hash or key(s) and value')
       end
 
       it 'handles nested config values' do

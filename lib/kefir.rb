@@ -43,16 +43,21 @@ module Kefir
     end
 
     def set(*paths)
-      raise ArgumentError.new, 'Kefir::Config.set requires at least one path and value' if paths.size < 2
-      value = paths.pop
-      *keys, last_key = paths
+      if paths.first.is_a?(Hash)
+        config.merge!(paths.first)
+      elsif paths.size >= 2
+        value = paths.pop
+        *keys, last_key = paths
 
-      nested = keys.inject(config) do |config, key|
-        config[key] = {} unless config[key]
-        config[key]
+        nested = keys.inject(config) do |config, key|
+          config[key] = {} unless config[key]
+          config[key]
+        end
+
+        nested[last_key] = value unless nested.nil?
+      else
+        raise ArgumentError.new, 'Kefir::Config.set accepts a hash or key(s) and value'
       end
-
-      nested[last_key] = value unless nested.nil?
 
       config
     end

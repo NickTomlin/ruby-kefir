@@ -25,7 +25,6 @@ Or install it yourself as:
 require 'kefir'
 
 config = Kefier.config('my_gem')
-
 api_key = config.get(:api_key)
 
 config.set(:api_key, api_key + '!')
