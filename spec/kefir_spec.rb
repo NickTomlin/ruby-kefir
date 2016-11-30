@@ -68,6 +68,40 @@ RSpec.describe Kefir do
       end
     end
 
+    describe 'empty!' do
+      it 'empties config' do
+        config.set(foo: 'hay', biz: 'needle')
+        expect(config.count).to eq(2)
+        config.empty!
+        expect(config.count).to eq(0)
+      end
+    end
+
+    describe 'path' do
+      it 'returns the path of its store' do
+        store =  double(Kefir::FileStore, path: '/config/path')
+        config = Kefir::Config.new(store, {})
+
+        expect(config.path).to eq('/config/path')
+      end
+    end
+
+    context 'methods delegated to config hash' do
+      it 'allows inspection via key?' do
+        config.set(:one, 'one')
+
+        expect(config.key?(:one)).to eq(true)
+      end
+
+      it 'allows for the deletion of items via delete' do
+        config.set(one: 'one', two: 'two')
+        expect(config.key?(:one)).to eq(true)
+        config.delete(:one)
+
+        expect(config.to_h).to eq(two: 'two')
+      end
+    end
+
     describe 'to_s' do
       it 'stringifies as the value of it\'s config hash' do
         config.set(:one, :two, 'bar')

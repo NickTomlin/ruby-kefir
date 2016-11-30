@@ -7,23 +7,29 @@ module Kefir
   class MissingNamespaceError < StandardError; end
 
   class FileStore
+    attr_reader :path
+
     def initialize(config_file_path)
-      @config_path = config_file_path
+      @path = config_file_path
     end
 
     def read
-      File.read(@config_path) do |contents|
+      File.read(@path) do |contents|
         YAML.load(contents)
       end
     end
 
     def write(data)
-      File.write(@config_path, YAML.dump(data))
+      File.write(@path, YAML.dump(data))
     end
   end
 
   class Config
     include Enumerable
+    extend Forwardable
+
+    def_delegators :@config, :key?, :delete
+    def_delegator :@store, :path
 
     def each(&block)
       @config.each(&block)
@@ -52,6 +58,10 @@ module Kefir
       end
 
       config
+    end
+
+    def empty!
+      @config = {}
     end
 
     def get(*paths)
