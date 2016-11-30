@@ -50,6 +50,12 @@ RSpec.describe Kefir do
       config.set(:one, :two, 'bar')
       config.store
     end
+
+    it 'provides acces to the underlying hash' do
+      config.set(:one, 'bar')
+
+      expect(config.to_h).to eq(one: 'bar')
+    end
   end
 
   describe Kefir::FileStore do

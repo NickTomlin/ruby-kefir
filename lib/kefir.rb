@@ -57,6 +57,10 @@ module Kefir
     def to_s
       config.to_s
     end
+
+    def to_h
+      config.dup
+    end
   end
 
   def self.config(namespace)
