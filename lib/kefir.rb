@@ -23,12 +23,13 @@ module Kefir
   end
 
   class Config
-    def initialize(store)
+    def initialize(store, options)
       @store = store
+      @options = options
     end
 
     def config
-      @config ||= @store.read
+      @config ||= @store.read.merge!(@options.fetch(:defaults, {}))
     end
 
     def persist
@@ -63,12 +64,12 @@ module Kefir
     end
   end
 
-  def self.config(namespace)
+  def self.config(namespace, options = {})
     raise MissingNamespaceError, 'You must supply a namespace for your configuration files' if namespace.nil? || namespace.empty?
 
     config_file_path = EnvPaths.get(namespace).config
     store = FileStore.new(config_file_path)
 
-    Config.new(store)
+    Config.new(store, options)
   end
 end

@@ -5,7 +5,22 @@ require 'fileutils'
 RSpec.describe Kefir do
   describe Kefir::Config do
     let(:store_double) { double(Kefir::FileStore, read: {}, write: nil) }
-    let(:config) { Kefir::Config.new(store_double) }
+    let(:config) { Kefir::Config.new(store_double, {}) }
+
+    describe 'initialize' do
+      it 'accepts a default option that shallowly merges with config' do
+        store = double(Kefir::FileStore, read: { should_change: 'change_me', should_stay: 'immortal' }, write: nil)
+        options = {
+          defaults: {
+            should_change: 'changed!'
+          }
+        }
+        config = Kefir::Config.new(store, options)
+
+        expect(config.get(:should_change)).to eq('changed!')
+        expect(config.get(:should_stay)).to eq('immortal')
+      end
+    end
 
     describe 'set' do
       it 'sets config' do
