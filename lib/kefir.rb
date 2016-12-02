@@ -1,4 +1,5 @@
 require 'dig_rb'
+require 'fileutils'
 require 'env_paths'
 require 'yaml'
 require 'kefir/version'
@@ -16,7 +17,7 @@ module Kefir
     raise MissingNamespaceError, 'You must supply a namespace for your configuration files' if namespace.nil? || namespace.empty?
 
     parsed_options = parse_options(namespace, options)
-    store = FileStore.new(parsed_options[:config_file_path])
+    store = FileStore.new(parsed_options)
 
     Config.new(store, options)
   end
@@ -25,9 +26,7 @@ module Kefir
 
   def self.parse_options(namespace, options)
     parsed = DEFAULT_OPTIONS.merge(options)
-    cwd = parsed.fetch(:cwd, EnvPaths.get(namespace).config)
-    parsed[:config_file_path] = File.expand_path(parsed[:config_name], cwd)
-
+    parsed[:cwd] = parsed.fetch(:cwd, EnvPaths.get(namespace).config)
     parsed
   end
 end

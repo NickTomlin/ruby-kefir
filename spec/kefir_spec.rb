@@ -13,7 +13,8 @@ RSpec.describe Kefir do
     end
 
     it 'returns a fully functioning config object that can read config' do
-      allow(File).to receive(:read).and_yield("user: bob\napi_key: secret-value")
+      allow(File).to receive(:directory?).and_return(true)
+      allow(YAML).to receive(:load_file).and_return('user' => 'bob')
 
       config = Kefir.config('test')
 
@@ -21,7 +22,8 @@ RSpec.describe Kefir do
     end
 
     it 'returns a fully functioning config object that can write config' do
-      allow(File).to receive(:read).and_yield("user: bob\napi_key: secret-value")
+      allow(File).to receive(:directory?).and_return(true)
+      allow(YAML).to receive(:load_file).with(/config\.yml$/).and_return(false)
       expect(File).to receive(:write)
 
       config = Kefir.config('test')
@@ -30,14 +32,16 @@ RSpec.describe Kefir do
 
     context 'options' do
       it 'provides defaults' do
-        expect(File).to receive(:read).with(/config\.yml$/).and_yield("user: bob\napi_key: secret-value")
+        allow(File).to receive(:directory?).and_return(true)
+        expect(YAML).to receive(:load_file).with(/config\.yml$/).and_return(false)
         config = Kefir.config('test')
         config.get(:foo)
       end
 
       it 'allows overriding current directory' do
         custom_cwd = File.expand_path('custom/path', '/')
-        expect(File).to receive(:read).with(File.join(custom_cwd, 'config.yml')).and_yield("user: bob\napi_key: secret-value")
+        allow(File).to receive(:directory?).and_return(true)
+        expect(YAML).to receive(:load_file).with(File.join(custom_cwd, 'config.yml')).and_return(false)
 
         config = Kefir.config('test', cwd: custom_cwd)
         config.get(:foo)
@@ -45,7 +49,8 @@ RSpec.describe Kefir do
 
       it 'allows overriding the :config_name' do
         custom_cwd = File.expand_path('custom/path', '/')
-        expect(File).to receive(:read).with(File.join(custom_cwd, 'custom_config_name.yml')).and_yield("user: bob\napi_key: secret-value")
+        allow(File).to receive(:directory?).and_return(true)
+        expect(YAML).to receive(:load_file).with(File.join(custom_cwd, 'custom_config_name.yml')).and_return(false)
 
         config = Kefir.config('test', cwd: custom_cwd, config_name: 'custom_config_name.yml')
         config.get(:foo)
