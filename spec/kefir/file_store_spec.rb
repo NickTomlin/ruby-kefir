@@ -1,5 +1,11 @@
 RSpec.describe Kefir::FileStore do
-  let(:data) { { secret: 'dont tell', users: [{ name: 'bob' }, { name: 'jane' }] } }
+  let(:data) do
+    {
+      secret: 'dont tell',
+      users: [{ name: 'bob' }, { name: 'jane' }]
+    }
+  end
+
   let(:file_path) { File.join(@temp_dir, 'config.yml') }
 
   before(:each) do
@@ -8,6 +14,11 @@ RSpec.describe Kefir::FileStore do
 
   after(:each) do
     FileUtils.remove_dir(@temp_dir)
+  end
+
+  it 'gives its path' do
+    store = Kefir::FileStore.new(cwd: @temp_dir, config_name: 'config.yml')
+    expect(store.path).to eq(File.join(@temp_dir, 'config.yml'))
   end
 
   it 'reads a configuration file' do

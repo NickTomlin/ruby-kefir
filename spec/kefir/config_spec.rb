@@ -1,5 +1,7 @@
 RSpec.describe Kefir::Config do
-  let(:store_double) { double(Kefir::FileStore, read: {}, write: nil) }
+  let(:store_double) do
+    double(Kefir::FileStore, read: {}, write: nil, path: 'custom_path')
+  end
   let(:config) { Kefir::Config.new(store_double, {}) }
 
   describe 'initialize' do
@@ -74,7 +76,7 @@ RSpec.describe Kefir::Config do
 
   describe 'path' do
     it 'returns the path of its store' do
-      store =  double(Kefir::FileStore, path: '/config/path')
+      store = double(Kefir::FileStore, path: '/config/path')
       config = Kefir::Config.new(store, {})
 
       expect(config.path).to eq('/config/path')

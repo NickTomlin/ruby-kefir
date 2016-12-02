@@ -4,19 +4,19 @@ module Kefir
 
     def initialize(options = {})
       @dir = options[:cwd]
-      @file_path = File.expand_path(options[:config_name], @dir)
+      @path = File.expand_path(options[:config_name], @dir)
     end
 
     def read
       FileUtils.mkdir_p(@dir)
-      YAML.load_file(@file_path) || {}
+      YAML.load_file(@path) || {}
     rescue Errno::ENOENT
       {}
     end
 
     def write(data)
       FileUtils.mkdir_p(@dir)
-      File.write(@file_path, YAML.dump(data))
+      File.write(@path, YAML.dump(data))
     end
   end
 end
